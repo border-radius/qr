@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>QR</title>
+  <script src="/qrcode.js"></script>
+  <style>
+    html, body {
+      margin: 0;
+      height: 100%;
+    }
+
+    .container {
+      height: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .code {
+      font-family: sans-serif;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="code">
+    </div>
+  </div>
+  <script>
+    (async () => {
+      const code = Math.random().toString(36).slice(2);
+      const link = `${window.location.origin}/c/${code}`;
+      new QRCode(document.querySelector('.code'), link);
+
+      while (true) {
+        try {
+          const res = await fetch(`/w/${code}`)
+          const text = await res.text()
+
+          if (text === 'OK') {
+            window.location.href = '/w.html';
+            break;
+          }
+        } catch (e) {}
+      }
+    })()
+  </script>
+</body>
+</html>
