@@ -614,7 +614,8 @@
       const qs = window.location.search.replace(/^\?/, '').split('&').reduce((obj, line) => {
         const [key, value] = line.split('=')
         obj[key] = value;
-      });
+        return obj;
+      }, {});
       const timeout = (t) => new Promise((resolve) => setTimeout(resolve, t));
       const code = Math.random().toString(36).slice(2);
       const link = `${window.location.origin}/c/${code}${window.location.search}`;
@@ -628,7 +629,7 @@
           if (text === 'OK') {
             setTimeout(() => {
                 window.location.href = 'https://www.youtube.com/watch?v=avz06PDqDbM';
-            }, parseInt(qs.t, 10) || 0);
+            }, parseInt(qs.t, 10) * 1000 || 0);
             break;
           }
 
